@@ -2,12 +2,15 @@ class User < ApplicationRecord
 	attr_accessor :remember_token
 	before_create :remember
 	before_save :email_downcase
-    has_secure_password# adds validations automatically. presence validation only checks for empty(nil) not blank(ex. '   ' is allowed), <=72, confirmation attribute
+
+   has_secure_password# adds validations automatically. presence validation only checks for empty(nil) not blank(ex. '   ' is allowed), <=72, confirmation attribute
 	validates :name, presence: true, length: {maximum: 35}#change from 15 to 35 for seeding to work
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, presence: true, length: {maximum: 255}, uniqueness: {case_sensitive: false}, format: {with: VALID_EMAIL_REGEX}
     validates :password, presence:true, length: {minimum: 6 }, allow_nil: true#presence here ensures nonblank passwords
 	
+  has_many :posts, dependent: :destroy
+  
 	#User prefix for clarity. This method is allowed to be used outside class
     def User.new_token
     	SecureRandom.urlsafe_base64

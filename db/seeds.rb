@@ -18,4 +18,6 @@ User.create!(name: "Example User",
 				 email: email,
 				 password: "password",
 				 password_confirmation: "password")
+	Post.create!(text: "Hello my name is #{name}", user_id: User.last.id)
 end
+

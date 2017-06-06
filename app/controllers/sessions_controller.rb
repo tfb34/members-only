@@ -3,11 +3,11 @@ class SessionsController < ApplicationController
   end
 
   def create
-  	@user = User.find_by(email: params[:session][:email])
-  	if @user && @user.authenticate(params[:session][:password]) # found
+  	user = User.find_by(email: params[:session][:email])
+  	if user && user.authenticate(params[:session][:password]) # found
   		flash[:success]= "You are now logged in."
-  		log_in @user
-  		redirect_to @user
+  		log_in user
+  		redirect_to posts_url
   	else
   		flash.now[:error] = "Invalid email/password combination"
   		render 'new'
@@ -16,12 +16,7 @@ class SessionsController < ApplicationController
 
   def destroy
   	#must delete user if logged in
-    logout if logged_in?
-  	if current_user != nil
-  	    cookies.delete :remember_token
-  	    session[:user_id] = nil
-  	    current_user.forget
-  	end
+    log_out if logged_in?
   	redirect_to root_url
   end
 end
