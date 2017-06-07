@@ -1,10 +1,5 @@
 Rails.application.routes.draw do
-  #get 'posts/new'
-
-  #get 'posts/index'
-  #get 'posts/create'
-
-
+ 
   resources :posts, :only => [:new, :create, :index]
 
   root 'static_pages#home'
